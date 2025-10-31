@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
-import Topbar from "@/components/Topbar";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
