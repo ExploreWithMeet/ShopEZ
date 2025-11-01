@@ -27,11 +27,7 @@ const poppins = Poppins({
   weight: ["500"],
 });
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  data: any;
-}
-
-const AppSidebar = ({ data, ...props }: AppSidebarProps) => {
+const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const pathname = usePathname();
   const { isMobile } = useSidebar();
   const navItems = useMemo<NavItem[]>(
@@ -78,7 +74,7 @@ const AppSidebar = ({ data, ...props }: AppSidebarProps) => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarPermanentLinks navItems={navItems} />
-        <SidebarChangableLinks data={data} />
+        <SidebarChangableLinks />
       </SidebarContent>
       <SidebarFooter>
         <SidebarFooterItems isLogin={true} />

@@ -16,9 +16,15 @@ import {
 } from "../../ui/sidebar";
 import { useState } from "react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 
-const SidebarChangableLinks = ({ data }: { data: any }) => {
-  const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(false);
+const SidebarChangableLinks = () => {
+  const trpc = useTRPC();
+  const { data, isLoading, isError } = useQuery(
+    trpc.categories.getMany.queryOptions()
+  );
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(true);
   const [openSubcategories, setOpenSubcategories] = useState<{
     [key: string]: boolean;
   }>({});
@@ -58,55 +64,72 @@ const SidebarChangableLinks = ({ data }: { data: any }) => {
                     </Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
+                {isLoading && (
+                  <SidebarMenuSubItem key="loading-categories">
+                    <SidebarMenuSubButton asChild>
+                      <span>Loading...</span>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                )}
+                {isError && (
+                  <SidebarMenuSubItem key="error-categories">
+                    <SidebarMenuSubButton asChild className="text-red-600">
+                      <span>Error Fetching</span>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                )}
+                {data &&
+                  data?.map((category: any) => {
+                    const hasSubcategories =
+                      category.subcategories &&
+                      category.subcategories.length > 0;
 
-                {data.map((category: any) => {
-                  const hasSubcategories =
-                    category.subcategories && category.subcategories.length > 0;
-
-                  if (!hasSubcategories) {
-                    return (
-                      <SidebarMenuSubItem key={category.id}>
-                        <SidebarMenuSubButton asChild>
-                          <Link href={`/`}>
-                            <span>{category.name}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    );
-                  }
-
-                  return (
-                    <Collapsible
-                      key={category.id}
-                      open={openSubcategories[category.id]}
-                      onOpenChange={() => toggleSubcategory(category.id)}
-                      className="group/subcollapsible"
-                    >
-                      <SidebarMenuSubItem>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuSubButton>
-                            <span>{category.name}</span>
-                            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/subcollapsible:rotate-90" />
+                    if (!hasSubcategories) {
+                      return (
+                        <SidebarMenuSubItem key={category.id}>
+                          <SidebarMenuSubButton asChild>
+                            <Link href="/">
+                              <span>{category.name}</span>
+                            </Link>
                           </SidebarMenuSubButton>
-                        </CollapsibleTrigger>
+                        </SidebarMenuSubItem>
+                      );
+                    }
 
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {category.subcategories.map((subcategory: any) => (
-                              <SidebarMenuSubItem key={subcategory.id}>
-                                <SidebarMenuSubButton asChild>
-                                  <Link href={`/`}>
-                                    <span>{subcategory.name}</span>
-                                  </Link>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </SidebarMenuSubItem>
-                    </Collapsible>
-                  );
-                })}
+                    return (
+                      <Collapsible
+                        key={category.id}
+                        open={openSubcategories[category.id]}
+                        onOpenChange={() => toggleSubcategory(category.id)}
+                        className="group/subcollapsible"
+                      >
+                        <SidebarMenuSubItem>
+                          <CollapsibleTrigger asChild>
+                            <SidebarMenuSubButton>
+                              <span>{category.name}</span>
+                              <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/subcollapsible:rotate-90" />
+                            </SidebarMenuSubButton>
+                          </CollapsibleTrigger>
+
+                          <CollapsibleContent>
+                            <SidebarMenuSub>
+                              {category.subcategories.map(
+                                (subcategory: any) => (
+                                  <SidebarMenuSubItem key={subcategory.id}>
+                                    <SidebarMenuSubButton asChild>
+                                      <Link href="/">
+                                        <span>{subcategory.name}</span>
+                                      </Link>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                )
+                              )}
+                            </SidebarMenuSub>
+                          </CollapsibleContent>
+                        </SidebarMenuSubItem>
+                      </Collapsible>
+                    );
+                  })}
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>

@@ -5,13 +5,14 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import SearchDialog from "./SearchDialog";
+import SortBy from "./SortBy";
 
 interface SearchInputProps {
   disabled?: boolean;
-  products?: any[];
 }
 
-const SearchInput = ({ disabled, products = [] }: SearchInputProps) => {
+const SearchInput = ({ disabled }: SearchInputProps) => {
+  const products = ["asd"];
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,6 +33,7 @@ const SearchInput = ({ disabled, products = [] }: SearchInputProps) => {
             readOnly
           />
         </div>
+        <SortBy />
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
