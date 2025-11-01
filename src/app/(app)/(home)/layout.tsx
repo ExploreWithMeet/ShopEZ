@@ -24,6 +24,7 @@ export default async function HomeLayout({
         exists: false,
       },
     },
+    sort: "name",
   });
 
   const formattedData = data.docs.map((doc) => ({
@@ -34,12 +35,10 @@ export default async function HomeLayout({
     })),
   }));
 
-  console.log({ data: data.docs, formattedData });
-
   return (
     <div className="grid w-full min-h-s">
       <SidebarProvider>
-        <AppSidebar />
+        <AppSidebar data={formattedData} />
         <SidebarInset>
           <AppTopbar />
           <SearchFilters data={formattedData} />

@@ -16,10 +16,6 @@ export const Categories: CollectionConfig = {
       index: true,
     },
     {
-      name: "color",
-      type: "text",
-    },
-    {
       name: "parent",
       type: "relationship",
       relationTo: "categories",

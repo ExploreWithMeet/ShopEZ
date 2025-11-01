@@ -6,7 +6,6 @@ import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
-import { Button } from "../ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -16,78 +15,23 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "../ui/sidebar";
+} from "../../ui/sidebar";
 import { Command } from "lucide-react";
-import SidebarUser from "./SidebarUser";
+import SidebarChangableLinks from "./SidebarChangeable";
+import { NavItem } from "@/types/nav";
+import SidebarPermanentLinks from "./SidebarPermanent";
+import SidebarFooterItems from "./SidebarFooterItems";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["500"],
 });
 
-interface NavItem {
-  href: string;
-  label: string;
-  isActive: boolean;
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  data: any;
 }
 
-const SidebarFooterItems = ({ isLogin }: { isLogin: boolean }) => {
-  return (
-    <>
-      {isLogin ? (
-        <SidebarUser
-          user={{
-            name: "Meet Sanghvi",
-            email: "meetsanghvi2347@gmail.com",
-            avatar: "",
-          }}
-        />
-      ) : (
-        <>
-          <Button variant="outline" asChild>
-            <Link href="/signup">Sign Up</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/login">Login</Link>
-          </Button>
-        </>
-      )}
-    </>
-  );
-};
-
-const SidebarItems = ({ navItems }: { navItems: NavItem[] }) => {
-  return (
-    <>
-      {/* <SidebarGroup> */}
-      {/* <SidebarGroupLabel> */}
-      <SidebarMenu className={cn("mt-5")}>
-        {navItems.map((item, idx) => {
-          return (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton asChild size="lg">
-                <Link
-                  href={item.href}
-                  className={cn(
-                    item.isActive
-                      ? "text-white bg-sidebar-accent"
-                      : "text-gray-200"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          );
-        })}
-      </SidebarMenu>
-      {/* </SidebarGroupLabel> */}
-      {/* </SidebarGroup> */}
-    </>
-  );
-};
-
-const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+const AppSidebar = ({ data, ...props }: AppSidebarProps) => {
   const pathname = usePathname();
   const { isMobile } = useSidebar();
   const navItems = useMemo<NavItem[]>(
@@ -109,7 +53,10 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     <Sidebar
       {...props}
       variant={isMobile ? "floating" : "inset"}
-      className={cn(poppins.className)}
+      className={cn(
+        poppins.className,
+        "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      )}
     >
       <SidebarHeader>
         <SidebarMenu>
@@ -130,7 +77,8 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarItems navItems={navItems} />
+        <SidebarPermanentLinks navItems={navItems} />
+        <SidebarChangableLinks data={data} />
       </SidebarContent>
       <SidebarFooter>
         <SidebarFooterItems isLogin={true} />
