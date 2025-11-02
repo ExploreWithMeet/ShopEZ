@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
+import { Toaster } from "@/components/ui/sonner";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -20,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${workSans.className} antialiased dark`}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          {children}
+          <Toaster position="top-right" />
+        </TRPCReactProvider>
       </body>
     </html>
   );

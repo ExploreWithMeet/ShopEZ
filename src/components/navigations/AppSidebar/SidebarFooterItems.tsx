@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SidebarUser from "./SidebarUser";
+import { useAuth } from "@/hooks/useAuth";
 
-const SidebarFooterItems = ({ isLogin }: { isLogin: boolean }) => {
+const SidebarFooterItems = () => {
+  const { user } = useAuth();
   return (
     <>
-      {isLogin ? (
+      {user ? (
         <SidebarUser
           user={{
-            name: "Meet Sanghvi",
-            email: "meetsanghvi2347@gmail.com",
+            username: `${user.username}`,
+            email: `${user.email}`,
             avatar: "",
           }}
         />

@@ -10,6 +10,7 @@ import sharp from "sharp";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Categories } from "./collections/Categories";
+import { COOKIE_PREFIX } from "./modules/constants";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -22,6 +23,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Categories],
+  cookiePrefix: COOKIE_PREFIX,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
@@ -30,7 +32,9 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || "",
+      connectionString: process.env.DATABASE_URI
+        ? process.env.DATABASE_URI
+        : "",
     },
   }),
   sharp,

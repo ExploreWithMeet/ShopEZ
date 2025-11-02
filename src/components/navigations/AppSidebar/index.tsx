@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -21,6 +20,7 @@ import SidebarChangableLinks from "./SidebarChangeable";
 import { NavItem } from "@/types/nav";
 import SidebarPermanentLinks from "./SidebarPermanent";
 import SidebarFooterItems from "./SidebarFooterItems";
+import { useMemo } from "react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -77,7 +77,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         <SidebarChangableLinks />
       </SidebarContent>
       <SidebarFooter>
-        <SidebarFooterItems isLogin={true} />
+        <SidebarFooterItems />
       </SidebarFooter>
     </Sidebar>
   );
