@@ -1,6 +1,6 @@
 import { headers as getHeaders, cookies as getCookies } from "next/headers";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { loginSchema, registerSchema } from "@/types/schema";
+import { loginSchema, registerSchema } from "@/types/schemas/auth";
 import { TRPCError } from "@trpc/server";
 import { generateAuthCookies } from "@/lib/auth";
 

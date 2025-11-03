@@ -11,9 +11,9 @@ import Link from "next/link";
 const SidebarPermanentLinks = ({ navItems }: { navItems: NavItem[] }) => {
   return (
     <>
-      <SidebarGroup>
+      <SidebarGroup className="mt-5">
         <SidebarGroupLabel>Main</SidebarGroupLabel>
-        <SidebarMenu className="mt-5">
+        <SidebarMenu>
           {navItems.map((item, idx) => {
             return (
               <SidebarMenuItem key={item.href}>

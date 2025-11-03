@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner";
 import { useForm } from "@tanstack/react-form";
-import { loginSchema } from "@/types/schema";
+import { loginSchema } from "@/types/schemas/auth";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";

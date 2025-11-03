@@ -20,7 +20,7 @@ const SortBy = () => {
     <Menubar className="w-fit ml-auto">
       <MenubarMenu>
         <MenubarTrigger>
-          <ArrowUpDown size="16" />
+          Sort by: <ArrowUpDown size="16" className="ml-2" />
         </MenubarTrigger>
         <MenubarContent side="left">
           <MenubarRadioGroup value="nosort">

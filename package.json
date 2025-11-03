@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate:types": "bunx --bun payload generate:types --disable-transpile",
+    "generate:map": "bunx --bun payload generate:importmap --disable-transpile",
     "db:fresh": "bunx --bun payload migrate:fresh --disable-transpile",
     "db:seed": "bun run src/seed.ts"
   },
@@ -16,6 +17,8 @@
     "@payloadcms/next": "^3.62.0",
     "@payloadcms/payload-cloud": "^3.62.0",
     "@payloadcms/richtext-lexical": "^3.62.0",
+    "@payloadcms/storage-r2": "^3.62.0",
+    "@payloadcms/storage-s3": "^3.62.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.7",

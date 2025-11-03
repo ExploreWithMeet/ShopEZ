@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import SearchDialog from "./SearchDialog";
 import SortBy from "./SortBy";
+import { Button } from "../ui/button";
 
 interface SearchInputProps {
   disabled?: boolean;
@@ -33,6 +34,12 @@ const SearchInput = ({ disabled }: SearchInputProps) => {
             readOnly
           />
         </div>
+      </div>
+
+      <div className="flex gap-5">
+        <Button size="sm" className="cursor-pointer">
+          Filter{" "}
+        </Button>
         <SortBy />
       </div>
 

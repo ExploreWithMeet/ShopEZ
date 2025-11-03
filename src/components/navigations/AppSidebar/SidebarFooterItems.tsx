@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SidebarUser from "./SidebarUser";
-import { useAuth } from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 
 const SidebarFooterItems = () => {
-  const { user } = useAuth();
+  const trpc = useTRPC();
+  const session = useQuery(trpc.auth.session.queryOptions());
   return (
     <>
-      {user ? (
+      {session.data?.user ? (
         <SidebarUser
           user={{
-            username: `${user.username}`,
-            email: `${user.email}`,
+            username: `${session.data.user.username}`,
+            email: `${session.data.user.email}`,
             avatar: "",
           }}
         />
