@@ -34,8 +34,9 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString:
-        "postgresql://postgres:Meet4654$@db.eptxrkjxkrffgsnewulu.supabase.co:5432/postgres",
+      connectionString: process.env.DATABASE_URI
+        ? process.env.DATABASE_URI
+        : "",
     },
   }),
   sharp,
