@@ -1,7 +1,7 @@
-import { SearchFilters } from "@/components/search-filters";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/navigations/AppSidebar";
 import AppTopbar from "@/components/navigations/AppTopbar";
+import SearchInput from "@/components/search-filters/SearchInput";
 
 export default async function HomeLayout({
   children,
@@ -14,8 +14,8 @@ export default async function HomeLayout({
         <AppSidebar />
         <SidebarInset>
           <AppTopbar />
-          <SearchFilters />
-          <div className="">{children}</div>
+          <SearchInput />
+          <div>{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </div>

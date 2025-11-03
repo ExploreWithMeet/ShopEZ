@@ -22,6 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "../../ui/sidebar";
+import Link from "next/link";
 
 interface IUserProp {
   user: {
@@ -80,9 +81,11 @@ const SidebarUser = ({ user }: IUserProp) => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/account">
+                  <BadgeCheck />
+                  Account
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />

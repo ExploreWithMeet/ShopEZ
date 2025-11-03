@@ -17,9 +17,9 @@ import {
 } from "../../ui/sidebar";
 import { Command } from "lucide-react";
 import SidebarChangableLinks from "./SidebarChangeable";
-import { NavItem } from "@/types/nav";
 import SidebarPermanentLinks from "./SidebarPermanent";
 import SidebarFooterItems from "./SidebarFooterItems";
+import { NavItem } from "@/types";
 import { useMemo } from "react";
 
 const poppins = Poppins({
@@ -72,10 +72,12 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarPermanentLinks navItems={navItems} />
         <SidebarChangableLinks />
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarFooterItems />
       </SidebarFooter>

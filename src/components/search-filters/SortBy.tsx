@@ -5,6 +5,8 @@ import {
   ArrowDownAZ,
   ArrowUpZA,
   Stars,
+  Sparkles,
+  ShoppingBag,
 } from "lucide-react";
 import {
   Menubar,
@@ -15,31 +17,60 @@ import {
   MenubarTrigger,
 } from "../ui/menubar";
 
-const SortBy = () => {
+interface SortByProps {
+  sortby: string;
+  setSortby: (sortby: string) => void;
+}
+
+const SortBy = ({ sortby, setSortby }: SortByProps) => {
+  const getSortLabel = (value: string) => {
+    switch (value) {
+      case "price-l":
+        return "Price: Low to High";
+      case "price-h":
+        return "Price: High to Low";
+      case "name-a":
+        return "Name: A-Z";
+      case "name-z":
+        return "Name: Z-A";
+      case "new":
+        return "Newest Arrivals";
+      case "reviews":
+        return "Reviews";
+      case "nosort":
+      default:
+        return "None";
+    }
+  };
+
   return (
-    <Menubar className="w-fit ml-auto">
+    <Menubar className="">
       <MenubarMenu>
-        <MenubarTrigger>
-          Sort by: <ArrowUpDown size="16" className="ml-2" />
+        <MenubarTrigger className="flex items-center justify-center w-full">
+          Sort by: {getSortLabel(sortby)}{" "}
+          <ArrowUpDown size="16" className="ml-2" />
         </MenubarTrigger>
         <MenubarContent side="left">
-          <MenubarRadioGroup value="nosort">
+          <MenubarRadioGroup value={sortby} onValueChange={setSortby}>
             <MenubarRadioItem value="nosort">None</MenubarRadioItem>
-            <MenubarRadioItem value="p-l-h">
-              Price <ArrowUp10Icon />
+            <MenubarRadioItem value="price-l">
+              Price <ArrowUp10Icon className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
-            <MenubarRadioItem value="p-h-l">
-              Price <ArrowDown01Icon />
+            <MenubarRadioItem value="price-h">
+              Price <ArrowDown01Icon className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
             <MenubarRadioItem value="name-a">
-              Name <ArrowDownAZ />
+              Name <ArrowDownAZ className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
             <MenubarRadioItem value="name-z">
-              Name <ArrowUpZA />
+              Name <ArrowUpZA className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
-            <MenubarRadioItem value="new">Newest Arrivals</MenubarRadioItem>
+            <MenubarRadioItem value="new">
+              Newest Arrivals{" "}
+              <ShoppingBag className="inline-block ml-1" size={16} />
+            </MenubarRadioItem>
             <MenubarRadioItem value="reviews">
-              Reviews <Stars />
+              Reviews <Stars className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
           </MenubarRadioGroup>
         </MenubarContent>

@@ -81,7 +81,6 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
 
         <ScrollArea className="h-[calc(100vh-5rem)]">
           <div className="space-y-2 px-4 py-4">
-            {/* All Categories Link */}
             <Link
               href="/"
               onClick={handleLinkClick}
@@ -92,21 +91,18 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
               All Categories
             </Link>
 
-            {/* Loading State */}
             {isLoading && (
               <div className="flex items-center justify-center py-8">
                 <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
               </div>
             )}
 
-            {/* Error State */}
             {isError && (
               <div className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">
                 Error loading categories. Please try again.
               </div>
             )}
 
-            {/* Categories List */}
             {data &&
               data.map((category: any) => {
                 const hasSubcategories =

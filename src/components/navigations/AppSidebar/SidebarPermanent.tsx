@@ -5,7 +5,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NavItem } from "@/types/nav";
+import { NavItem } from "@/types";
 import Link from "next/link";
 
 const SidebarPermanentLinks = ({ navItems }: { navItems: NavItem[] }) => {

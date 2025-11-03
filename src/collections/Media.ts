@@ -73,7 +73,6 @@ export const Media: CollectionConfig = {
     ],
     beforeValidate: [
       ({ data, req }) => {
-        // Max 3MB
         if (req.file && req.file.size > 3 * 1024 * 1024) {
           throw new TRPCError({
             code: "UNPROCESSABLE_CONTENT",

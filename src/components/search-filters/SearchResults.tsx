@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import { Package } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 interface SearchResultsProps {
   products: any[];
@@ -13,6 +15,7 @@ const SearchResults = ({
   searchQuery,
   onProductClick,
 }: SearchResultsProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   if (!searchQuery) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
@@ -41,15 +44,24 @@ const SearchResults = ({
         {products.map((product) => (
           <Link
             key={product.id}
-            href={`/products/${product.slug}`}
+            href={`/products/${product.id}`}
             onClick={onProductClick}
             className="flex items-center gap-4 p-4 rounded-lg border hover:bg-sidebar transition-colors"
           >
             {product.image ? (
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-16 h-16 object-cover rounded"
+              <Image
+                src={product.image.url}
+                loading="lazy"
+                quality={75}
+                alt={product.image.alt}
+                width={150}
+                height={100}
+                onLoad={() => setIsLoading(false)}
+                placeholder="empty"
+                className={`
+          object-cover duration-300 ease-in-out aspect-video
+          ${isLoading ? "scale-105 blur-sm" : "scale-100 blur-0"}
+        `}
               />
             ) : (
               <div className="w-16 h-16 bg-muted rounded flex items-center justify-center">

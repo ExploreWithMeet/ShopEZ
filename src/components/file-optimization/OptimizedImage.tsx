@@ -25,16 +25,12 @@ export function OptimizedImage({
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Smart fallback: use the requested size, or fallback to smaller size, or original
   const getSrc = () => {
-    // Try requested size
     if (image.sizes?.[size]?.url && !image.sizes[size].url.includes("null")) {
       return image.sizes[size].url;
     }
 
-    // Fallback chain based on requested size
     if (size === "hero") {
-      // Try card, then thumbnail, then original
       if (image.sizes?.card?.url && !image.sizes.card.url.includes("null")) {
         return image.sizes.card.url;
       }
@@ -47,7 +43,6 @@ export function OptimizedImage({
     }
 
     if (size === "card") {
-      // Try thumbnail, then original
       if (
         image.sizes?.thumbnail?.url &&
         !image.sizes.thumbnail.url.includes("null")
@@ -56,15 +51,12 @@ export function OptimizedImage({
       }
     }
 
-    // Final fallback to original
     return image.url;
   };
 
   const src = getSrc();
 
-  // Get actual dimensions from the image or use defaults
   const getDimensions = () => {
-    // Try to get dimensions from the selected size
     if (image.sizes?.[size]?.width && image.sizes?.[size]?.height) {
       return {
         width: image.sizes[size].width!,
@@ -72,7 +64,6 @@ export function OptimizedImage({
       };
     }
 
-    // Use original image dimensions if available
     if (image.width && image.height) {
       return {
         width: image.width,
@@ -80,7 +71,6 @@ export function OptimizedImage({
       };
     }
 
-    // Default dimensions as fallback
     const defaults = {
       thumbnail: { width: 400, height: 300 },
       card: { width: 800, height: 600 },

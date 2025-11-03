@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
 import "./globals.css";
+import { Work_Sans } from "next/font/google";
+import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${workSans.className} antialiased dark`}>
-        <TRPCReactProvider>
-          {children}
-          <Toaster position="top-right" />
-        </TRPCReactProvider>
+        <NuqsAdapter>
+          <TRPCReactProvider>
+            {children}
+            <Toaster position="top-right" />
+          </TRPCReactProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
