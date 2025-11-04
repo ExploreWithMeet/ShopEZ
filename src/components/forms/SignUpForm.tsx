@@ -57,6 +57,8 @@ const SignUpForm = () => {
       onSubmit: registerSchema,
     },
     onSubmit: async ({ value }) => {
+      const { username } = value;
+      value = { ...value, username: username.toLowerCase() };
       register.mutate(value);
     },
   });

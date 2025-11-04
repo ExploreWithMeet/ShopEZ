@@ -15,7 +15,7 @@ const CategoryPage = async ({
   const { category } = await params;
   const filters = await loadProductFilters(searchParams);
   prefetch(
-    trpc.products.getMany.queryOptions({
+    trpc.products.getMany.infiniteQueryOptions({
       category,
       max_price: filters.max_price,
       min_price: filters.min_price,

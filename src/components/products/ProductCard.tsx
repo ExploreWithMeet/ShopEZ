@@ -4,6 +4,7 @@ import { Badge } from "../ui/badge";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { OptimizedImage } from "../file-optimization/OptimizedImage";
+import Link from "next/link";
 
 const ProductCard = ({ product }: { product: any }) => {
   const [liked, setLiked] = useState<boolean>(false);
@@ -40,11 +41,13 @@ const ProductCard = ({ product }: { product: any }) => {
       </div>
 
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-1">
-          {product.name}
-        </h3>
+        <Link href={`/product/${product.id}`}>
+          <h3 className="text-lg font-semibold hover:underline hover:underline-offset-4 text-foreground">
+            {product.name}
+          </h3>
+        </Link>
 
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">
+        <p className="text-sm text-muted-foreground mb-2.5 line-clamp-2 flex-1">
           {product.description}
         </p>
 
@@ -66,10 +69,10 @@ const ProductCard = ({ product }: { product: any }) => {
 
         <div className="flex items-center justify-between gap-3 mt-auto">
           <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground uppercase font-medium">
+            <span className="text-xs text-muted-foreground font-medium">
               Price
             </span>
-            <span className="text-2xl font-bold text-foreground">
+            <span className="text-md font-bold text-foreground">
               ₹{product.price.toLocaleString()}
             </span>
           </div>
@@ -81,6 +84,16 @@ const ProductCard = ({ product }: { product: any }) => {
             <span>Add to cart</span>
           </Button>
         </div>
+        <p className="text-xs text-gray-200 mt-2 w-fit">
+          From:{" "}
+          <Link
+            href={`/user/${product.tenant.slug}`}
+            className="hover:underline"
+            prefetch={false}
+          >
+            {product.tenant.name}
+          </Link>
+        </p>
       </div>
     </div>
   );

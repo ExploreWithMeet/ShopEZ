@@ -2,17 +2,19 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { s3Storage } from "@payloadcms/storage-s3";
+import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
-import { s3Storage } from "@payloadcms/storage-s3";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Categories } from "./collections/Categories";
 import { COOKIE_PREFIX } from "./modules/constants";
 import { Products } from "./collections/Products";
+import { Tenants } from "./collections/Tenants";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -24,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products],
+  collections: [Users, Media, Categories, Products, Tenants],
   cookiePrefix: COOKIE_PREFIX,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
@@ -34,14 +36,22 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI
-        ? process.env.DATABASE_URI
+      connectionString: process.env.DATABASE_URI2
+        ? process.env.DATABASE_URI2
         : "",
     },
   }),
   sharp,
   plugins: [
     payloadCloudPlugin(),
+    multiTenantPlugin({
+      collections: { products: {} },
+      tenantsArrayField: {
+        includeDefaultField: false,
+      },
+      userHasAccessToAllTenants: (user) =>
+        Boolean(user?.roles?.includes("super-admin")),
+    }),
     s3Storage({
       collections: {
         media: {

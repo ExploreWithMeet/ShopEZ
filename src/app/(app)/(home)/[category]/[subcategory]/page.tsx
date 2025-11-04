@@ -12,10 +12,10 @@ const SubCategoryPage = async ({
   params: Promise<{ category: string; subcategory: string }>;
   searchParams: Promise<SearchParams>;
 }) => {
-  const { category, subcategory } = await params;
+  const { subcategory } = await params;
   const filters = await loadProductFilters(searchParams);
   prefetch(
-    trpc.products.getMany.queryOptions({
+    trpc.products.getMany.infiniteQueryOptions({
       subcategory,
       max_price: filters.max_price,
       min_price: filters.min_price,

@@ -476,6 +476,27 @@ const constantCategories = [
 
 const seed = async () => {
   const payload = await getPayload({ config: configPromise });
+
+  const adminTenant = await payload.create({
+    collection: "tenants",
+    data: {
+      name: "admin",
+      slug: "admin",
+      stripeAccountId: "admin",
+    },
+  });
+
+  await payload.create({
+    collection: "users",
+    data: {
+      email: "meetsanghvi2347@gmail.com",
+      password: "Meet4654$$",
+      roles: ["super-admin"],
+      username: "admin",
+      tenants: [{ tenant: adminTenant.id }],
+    },
+  });
+
   for (const category of constantCategories) {
     const parentCategory = await payload.create({
       collection: "categories",
@@ -499,6 +520,11 @@ const seed = async () => {
   }
 };
 
-await seed();
-
-process.exit(0);
+try {
+  await seed();
+  console.log("SuccessFull Seeding");
+  process.exit(0);
+} catch (e) {
+  console.error("Error Seeding:", e);
+  process.exit(1);
+}
