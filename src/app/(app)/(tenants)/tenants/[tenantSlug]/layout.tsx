@@ -9,7 +9,6 @@ interface Props {
 export default async function TenantLayout({ children, params }: Props) {
   const { tenantSlug } = await params;
   prefetch(trpc.tenants.getOne.queryOptions({ slug: tenantSlug }));
-
   return (
     <section>
       <TenantTopbar slug={tenantSlug} />

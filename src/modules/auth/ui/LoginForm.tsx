@@ -64,7 +64,7 @@ const LoginForm = () => {
   });
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-md z-50">
       <CardHeader>
         <CardTitle className="text-center text-xl">Login</CardTitle>
         <CardDescription className="text-center">Welcome Back!</CardDescription>

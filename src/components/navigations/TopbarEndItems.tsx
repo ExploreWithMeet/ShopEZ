@@ -48,20 +48,16 @@ const TopbarEndItems = () => {
           variant="ghost"
           size="sm"
           className="text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-          onClick={(e) => {
-            e.preventDefault();
-          }}
+          asChild
         >
-          Sign Up
+          <Link href="/signup">Sign Up</Link>
         </Button>
         <Button
           size="sm"
           className="text-sm font-medium rounded-md shadow-sm"
-          onClick={(e) => {
-            e.preventDefault();
-          }}
+          asChild
         >
-          Login
+          <Link href="/login">Login</Link>
         </Button>
       </div>
     );

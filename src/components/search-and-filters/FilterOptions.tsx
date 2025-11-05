@@ -37,7 +37,7 @@ const FilterOptions = () => {
     <div className="grid gap-2">
       <CategoriesSidebar
         trigger={
-          <Button variant="secondary">
+          <Button variant="secondary" size={"default"}>
             <FolderOpen />
             Categories
           </Button>

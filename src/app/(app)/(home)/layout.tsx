@@ -17,8 +17,8 @@ export default async function HomeLayout({ children }: Props) {
           <Topbar />
           <SearchAndFilters />
         </Suspense>
+        <div>{children}</div>
       </HydrateClient>
-      <div>{children}</div>
     </div>
   );
 }

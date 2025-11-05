@@ -6,7 +6,7 @@ interface Props {
 
 const Product = async ({ params }: Props) => {
   const { tenantSlug, productId } = await params;
-  return <SingleProduct tenantSlug={tenantSlug} productId={productId} />;
+  return <SingleProduct productId={productId} />;
 };
 
 export default Product;

@@ -65,14 +65,7 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        {trigger || (
-          <Button variant="ghost" size="sm" className="w-full justify-between">
-            Categories
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        )}
-      </SheetTrigger>
+      <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent side="left" className="w-80">
         <SheetHeader className="border-b px-6 py-4">
           <SheetTitle>Browse Categories</SheetTitle>
