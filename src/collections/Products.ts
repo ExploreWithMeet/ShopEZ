@@ -29,6 +29,25 @@ export const Products: CollectionConfig = {
       relationTo: "media",
     },
     {
+      name: "images",
+      type: "array",
+      label: "Image Slider",
+      minRows: 0,
+      maxRows: 8,
+      labels: {
+        singular: "singleImage",
+        plural: "multipleImages",
+      },
+      fields: [
+        {
+          name: "sliderImage",
+          type: "upload",
+          relationTo: "media",
+          required: true,
+        },
+      ],
+    },
+    {
       name: "refundpolicy",
       type: "select",
       options: ["7-day", "14-day", "21-day", "30-day", "no-refund"],

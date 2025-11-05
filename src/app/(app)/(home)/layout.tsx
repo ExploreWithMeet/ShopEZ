@@ -1,23 +1,24 @@
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import AppSidebar from "@/components/navigations/AppSidebar";
-import AppTopbar from "@/components/navigations/AppTopbar";
-import SearchInput from "@/components/search-filters/SearchInput";
+import Topbar from "@/components/navigations/Topbar";
+import { TopbarSkeleton } from "@/components/navigations/TopbarSkeleton";
+import SearchAndFilters from "@/components/search-and-filters";
+import { HydrateClient, prefetch, trpc } from "@/trpc/server";
+import { Suspense } from "react";
 
-export default async function HomeLayout({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+}
+
+export default async function HomeLayout({ children }: Props) {
+  prefetch(trpc.auth.session.queryOptions());
   return (
-    <div className="grid w-full min-h-s">
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <AppTopbar />
-          <SearchInput />
-          <div>{children}</div>
-        </SidebarInset>
-      </SidebarProvider>
+    <div className="grid w-full min-h-screen">
+      <HydrateClient>
+        <Suspense fallback={<TopbarSkeleton />}>
+          <Topbar />
+          <SearchAndFilters />
+        </Suspense>
+      </HydrateClient>
+      <div>{children}</div>
     </div>
   );
 }

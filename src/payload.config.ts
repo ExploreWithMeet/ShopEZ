@@ -12,9 +12,10 @@ import sharp from "sharp";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Categories } from "./collections/Categories";
-import { COOKIE_PREFIX } from "./modules/constants";
+import { COOKIE_PREFIX } from "@/constants";
 import { Products } from "./collections/Products";
 import { Tenants } from "./collections/Tenants";
+import { Config } from "./payload-types";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -44,7 +45,7 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
-    multiTenantPlugin({
+    multiTenantPlugin<Config>({
       collections: { products: {} },
       tenantsArrayField: {
         includeDefaultField: false,

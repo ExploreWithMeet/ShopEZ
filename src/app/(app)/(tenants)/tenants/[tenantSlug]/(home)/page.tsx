@@ -6,20 +6,19 @@ import ProductsListSkeleteon from "@/modules/products/ui/ProductsListSkeleteon";
 import ProductList from "@/modules/products/ui/ProductList";
 
 interface Props {
-  params: Promise<{ category: string; subcategory: string }>;
+  params: Promise<{ tenantSlug: string }>;
   searchParams: Promise<SearchParams>;
 }
 
-const SubCategoryPage = async ({ params, searchParams }: Props) => {
-  const { subcategory } = await params;
+const TenantPage = async ({ params, searchParams }: Props) => {
+  const { tenantSlug } = await params;
   const filters = await loadProductFilters(searchParams);
-
   prefetch(
     trpc.products.getMany.infiniteQueryOptions({
-      subcategory,
       max_price: filters.max_price,
       min_price: filters.min_price,
       sortby: filters.sortby,
+      tenantSlug,
     })
   );
 
@@ -27,11 +26,11 @@ const SubCategoryPage = async ({ params, searchParams }: Props) => {
     <div>
       <HydrateClient>
         <Suspense fallback={<ProductsListSkeleteon />}>
-          <ProductList subcategory={subcategory} />
+          <ProductList tenantSlug={tenantSlug} />
         </Suspense>
       </HydrateClient>
     </div>
   );
 };
 
-export default SubCategoryPage;
+export default TenantPage;

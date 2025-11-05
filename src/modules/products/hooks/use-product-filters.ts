@@ -1,5 +1,10 @@
 import { useQueryStates } from "nuqs";
-import { parseAsInteger, parseAsStringEnum, createLoader } from "nuqs/server";
+import {
+  parseAsInteger,
+  parseAsStringEnum,
+  createLoader,
+  parseAsString,
+} from "nuqs/server";
 
 export const params = {
   min_price: parseAsInteger.withDefault(0).withOptions({
@@ -23,6 +28,10 @@ export const params = {
       clearOnDefault: true,
       history: "push",
     }),
+  tenantSlug: parseAsString.withOptions({
+    clearOnDefault: true,
+    history: "push",
+  }),
 };
 
 export const useProductFilters = () => {

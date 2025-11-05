@@ -6,10 +6,12 @@ interface UseProductQueryParams {
   minPrice?: number;
   maxPrice?: number;
   sortby?: string;
+  tenantSlug?: string;
 }
 
 export const useProductQuery = ({
   category,
+  tenantSlug,
   subcategory,
   minPrice,
   maxPrice,
@@ -33,6 +35,10 @@ export const useProductQuery = ({
       query.sortby = sortby;
     }
 
+    if (tenantSlug) {
+      query.tenantSlug = tenantSlug;
+    }
+
     return query;
-  }, [category, subcategory, minPrice, maxPrice, sortby]);
+  }, [category, subcategory, minPrice, maxPrice, sortby, tenantSlug]);
 };

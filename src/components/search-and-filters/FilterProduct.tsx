@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,12 +15,7 @@ import {
   AccordionContent,
   AccordionItem,
 } from "@/components/ui/accordion";
-import { useEffect, useState } from "react";
-
-interface IPriceState {
-  min: number;
-  max: number;
-}
+import { TPriceStates } from "@/types";
 
 interface FilterAccordionItemProps {
   value: string;
@@ -27,8 +24,8 @@ interface FilterAccordionItemProps {
 }
 
 interface FilterProductProps {
-  price: IPriceState;
-  setPrice: (price: IPriceState) => void;
+  price: TPriceStates;
+  setPrice: (price: TPriceStates) => void;
   onClearAll: () => void;
 }
 
@@ -49,26 +46,21 @@ const FilterProduct = ({ price, setPrice, onClearAll }: FilterProductProps) => {
   const [localPrice, setLocalPrice] = useState(price);
   const [open, setOpen] = useState(false);
 
-  // Sync local state when price prop changes
   useEffect(() => {
     setLocalPrice(price);
   }, [price]);
 
   const handlePriceChange = (field: "min" | "max", value: string) => {
-    // Allow empty string
     if (value === "") {
       setLocalPrice({ ...localPrice, [field]: 0 });
       return;
     }
 
-    // Parse the value
     const numValue = Number(value);
 
-    // Only update if it's a valid number and non-negative
     if (!isNaN(numValue) && numValue >= 0) {
       setLocalPrice({ ...localPrice, [field]: numValue });
     }
-    // If invalid (NaN or negative), don't update - ignore the input
   };
 
   const handleApply = () => {
@@ -92,7 +84,8 @@ const FilterProduct = ({ price, setPrice, onClearAll }: FilterProductProps) => {
           Filters <Filter className="ml-2 h-4 w-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80" side="right" align="start">
+
+      <PopoverContent className="w-80" side="bottom" align="start">
         <div className="grid gap-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -115,6 +108,7 @@ const FilterProduct = ({ price, setPrice, onClearAll }: FilterProductProps) => {
               Set the filters for deep search.
             </p>
           </div>
+
           <div className="grid gap-2">
             <Accordion
               type="single"
@@ -152,6 +146,7 @@ const FilterProduct = ({ price, setPrice, onClearAll }: FilterProductProps) => {
               </FilterAccordionItem>
             </Accordion>
           </div>
+
           <div className="flex gap-2 pt-2 border-t">
             <Button
               variant="outline"

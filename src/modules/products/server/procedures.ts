@@ -1,21 +1,13 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { z } from "zod";
+import {
+  getManyProductSchema,
+  getOneProductSchema,
+  searchProductSchema,
+} from "@/types/schemas/products";
 
 export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
-    .input(
-      z.object({
-        cursor: z.number().default(1),
-        limit: z.number().default(10),
-        category: z.string().optional(),
-        subcategory: z.string().optional(),
-        min_price: z.number().optional().nullable(),
-        max_price: z.number().optional().nullable(),
-        sortby: z
-          .enum(["nosort", "name-a", "name-z", "price-l", "price-h", "new"])
-          .default("nosort"),
-      })
-    )
+    .input(getManyProductSchema)
     .query(async ({ ctx, input }) => {
       let categoryIds: (string | number)[] | undefined;
 
@@ -73,6 +65,11 @@ export const productsRouter = createTRPCRouter({
         priceConditions.less_than_equal = input.max_price;
       if (Object.keys(priceConditions).length)
         whereClause.price = priceConditions;
+      if (input.tenantSlug != null) {
+        whereClause["tenant.slug"] = {
+          equals: input.tenantSlug,
+        };
+      }
 
       let sort: string | undefined;
       switch (input.sortby) {
@@ -98,7 +95,7 @@ export const productsRouter = createTRPCRouter({
 
       const products = await ctx.db.find({
         collection: "products",
-        depth: 1,
+        depth: 2,
         where: Object.keys(whereClause).length ? whereClause : undefined,
         sort,
         page: input.cursor,
@@ -107,7 +104,7 @@ export const productsRouter = createTRPCRouter({
 
       const hasNextPage = products.totalPages > input.cursor;
       const nextCursor = hasNextPage ? input.cursor + 1 : undefined;
-
+      console.log(products.docs);
       return {
         docs: products.docs,
         totalDocs: products.totalDocs,
@@ -116,14 +113,19 @@ export const productsRouter = createTRPCRouter({
       };
     }),
 
+  getOne: baseProcedure
+    .input(getOneProductSchema)
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.db.findByID({
+        collection: "products",
+        id: input.productId,
+        depth: 1,
+      });
+      return product;
+    }),
+
   search: baseProcedure
-    .input(
-      z.object({
-        query: z.string(),
-        cursor: z.number().default(1),
-        limit: z.number().default(10),
-      })
-    )
+    .input(searchProductSchema)
     .query(async ({ ctx, input }) => {
       const { query, cursor, limit } = input;
 

@@ -32,7 +32,7 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
   const { data, isLoading, isError } = useQuery(
     trpc.categories.getMany.queryOptions()
   );
-  const [open, setOpen] = useState<boolean>();
+  const [open, setOpen] = useState<boolean>(false);
   const [openSubcategories, setOpenSubcategories] = useState<{
     [key: string]: boolean;
   }>({});
@@ -82,6 +82,7 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
         <ScrollArea className="h-[calc(100vh-5rem)]">
           <div className="space-y-2 px-4 py-4">
             <Link
+              prefetch={false}
               href="/"
               onClick={handleLinkClick}
               className={`flex items-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent ${
@@ -112,6 +113,7 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
                 if (!hasSubcategories) {
                   return (
                     <Link
+                      prefetch={false}
                       key={category.id}
                       href={`/${category.slug}`}
                       onClick={handleLinkClick}
@@ -127,12 +129,13 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
                 return (
                   <Collapsible
                     key={category.id}
-                    open={openSubcategories[category.id]}
+                    open={openSubcategories[category.id] ?? false}
                     onOpenChange={() => toggleSubcategory(category.id)}
                     className="space-y-1"
                   >
                     <div className="flex items-center gap-2">
                       <Link
+                        prefetch={false}
                         href={`/${category.slug}`}
                         onClick={handleLinkClick}
                         className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent ${
@@ -164,6 +167,7 @@ const CategoriesSidebar = ({ trigger }: CategoriesSheetProps) => {
                             `/${category.slug}/${subcategory.slug}`;
                           return (
                             <Link
+                              prefetch={false}
                               key={subcategory.id}
                               href={`/${category.slug}/${subcategory.slug}`}
                               onClick={handleLinkClick}

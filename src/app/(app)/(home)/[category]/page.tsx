@@ -1,19 +1,20 @@
-import ProductList from "@/components/products/ProductList";
-import ProductsListSkeleteon from "@/components/products/ProductsListSkeleteon";
-import { loadProductFilters } from "@/modules/products/hooks/use-product-filters";
+// app/(home)/[category]/page.tsx
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import { SearchParams } from "nuqs/server";
+import { loadProductFilters } from "@/modules/products/hooks/use-product-filters";
 import { Suspense } from "react";
+import ProductsListSkeleteon from "@/modules/products/ui/ProductsListSkeleteon";
+import ProductList from "@/modules/products/ui/ProductList";
 
-const CategoryPage = async ({
-  params,
-  searchParams,
-}: {
+interface Props {
   params: Promise<{ category: string }>;
   searchParams: Promise<SearchParams>;
-}) => {
+}
+
+const CategoryPage = async ({ params, searchParams }: Props) => {
   const { category } = await params;
   const filters = await loadProductFilters(searchParams);
+
   prefetch(
     trpc.products.getMany.infiniteQueryOptions({
       category,
@@ -22,6 +23,7 @@ const CategoryPage = async ({
       sortby: filters.sortby,
     })
   );
+
   return (
     <div>
       <HydrateClient>

@@ -17,7 +17,7 @@ const SearchInput = () => {
 
   return (
     <>
-      <div className="flex items-center px-4 sm:px-8 pt-4 pb-1 gap-2 w-full max-w-full">
+      <div className="flex items-center w-full max-w-full z-20">
         <div className="relative w-full">
           <SearchIcon
             size="20"

@@ -5,7 +5,6 @@ import {
   ArrowDownAZ,
   ArrowUpZA,
   Stars,
-  Sparkles,
   ShoppingBag,
 } from "lucide-react";
 import {
@@ -17,12 +16,12 @@ import {
   MenubarTrigger,
 } from "../ui/menubar";
 
-interface SortByProps {
+interface Props {
   sortby: string;
-  setSortby: (sortby: string) => void;
+  setSortby: (sortby: any) => void;
 }
 
-const SortBy = ({ sortby, setSortby }: SortByProps) => {
+const SortBy = ({ sortby, setSortby }: Props) => {
   const getSortLabel = (value: string) => {
     switch (value) {
       case "price-l":
@@ -44,13 +43,13 @@ const SortBy = ({ sortby, setSortby }: SortByProps) => {
   };
 
   return (
-    <Menubar className="">
+    <Menubar>
       <MenubarMenu>
         <MenubarTrigger className="flex items-center justify-center w-full">
           Sort by: {getSortLabel(sortby)}{" "}
           <ArrowUpDown size="16" className="ml-2" />
         </MenubarTrigger>
-        <MenubarContent side="left">
+        <MenubarContent side="bottom">
           <MenubarRadioGroup value={sortby} onValueChange={setSortby}>
             <MenubarRadioItem value="nosort">None</MenubarRadioItem>
             <MenubarRadioItem value="price-l">
@@ -66,7 +65,7 @@ const SortBy = ({ sortby, setSortby }: SortByProps) => {
               Name <ArrowUpZA className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
             <MenubarRadioItem value="new">
-              Newest Arrivals{" "}
+              Newest Arrivals
               <ShoppingBag className="inline-block ml-1" size={16} />
             </MenubarRadioItem>
             <MenubarRadioItem value="reviews">

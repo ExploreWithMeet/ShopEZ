@@ -76,7 +76,7 @@ const SearchResults = ({
                 </p>
               )}
               {product.price && (
-                <p className="text-sm font-semibold mt-1">${product.price}</p>
+                <p className="text-sm font-semibold mt-1">₹{product.price}</p>
               )}
             </div>
           </Link>

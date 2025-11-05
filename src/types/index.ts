@@ -11,3 +11,8 @@ export type TSortBy =
   | "price-l"
   | "price-h"
   | "new";
+
+export type TPriceStates = {
+  min: number;
+  max: number;
+};
