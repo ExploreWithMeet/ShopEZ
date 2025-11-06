@@ -28,19 +28,6 @@ export const MobileProductCard = ({ product }: ProductCardProps) => {
           className="h-full rounded-md aspect-square"
         />
       </div>
-      <Button
-        size="icon"
-        variant="secondary"
-        onClick={() => setLiked(!liked)}
-        className="absolute top-2 right-2 rounded-full backdrop-blur-sm h-8 w-8"
-      >
-        <Heart
-          className={cn(
-            "h-4 w-4 transition-all duration-200",
-            liked ? "fill-destructive stroke-destructive" : ""
-          )}
-        />
-      </Button>
 
       <div className="flex-1 flex flex-col justify-between min-w-0 px-3">
         <CardHeader className="p-0 space-y-2 mb-2">
@@ -138,19 +125,6 @@ export const DesktopProductCard = ({ product }: ProductCardProps) => {
           </Badge>
         </div>
         <div className="flex items-center gap-2 mt-2 justify-between w-full">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setLiked(!liked)}
-          >
-            <Heart
-              size={18}
-              className={cn(
-                "h-5 w-5 transition-all duration-200",
-                liked ? "fill-destructive stroke-destructive" : ""
-              )}
-            />
-          </Button>
           <Button size="default" className="flex-1 cursor-pointer">
             <ShoppingCart />
             Add to Cart

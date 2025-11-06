@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Poppins } from "next/font/google";
@@ -10,7 +11,22 @@ import CarouselSection from "./Product/CarouselSection";
 import ReviewTable from "./Product/ReviewTable";
 import DetailCards from "./Product/DetailCards";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
+const CartButton = dynamic(
+  () => import("./Product/CartButton").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => (
+      <Button
+        disabled
+        className="w-full mt-5 text-md cursor-pointer"
+        variant={"secondary"}
+      >
+        <Spinner />
+      </Button>
+    ),
+  }
+);
 
 interface Props {
   productId: string;
@@ -115,15 +131,14 @@ const SingleProduct = ({ productId }: Props) => {
               <ReviewTable />
             </div>
 
-            <div className="flex flex-col md:flex-row gap-5 mt-5">
-              <Button className="" variant="outline" size="icon">
-                <Heart />
-              </Button>
-              <Button className="flex-1 text-md cursor-pointer">
-                <ShoppingCart size={24} />
-                Add to Cart
-              </Button>
-            </div>
+            {/* <Button className="w-full mt-5 text-md cursor-pointer">
+              <ShoppingCart size={24} />
+              Add to Cart
+            </Button> */}
+            <CartButton
+              productId={String(productId)}
+              tenantSlug={data.tenant.slug}
+            />
           </div>
         </div>
       </div>

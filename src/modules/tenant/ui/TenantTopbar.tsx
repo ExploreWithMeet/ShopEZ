@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -9,7 +10,21 @@ import {
 } from "@/components/ui/navigation-menu";
 import { NavItem } from "@/types";
 import Link from "next/link";
-import { generateTenantURL } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+
+const CheckoutButton = dynamic(
+  () =>
+    import("@/modules/checkout/ui/CheckoutButton").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => (
+      <Button disabled size="icon" variant="outline">
+        <Spinner />
+      </Button>
+    ),
+  }
+);
 
 const TenantTopbar = ({ slug }: { slug: string }) => {
   const trpc = useTRPC();
@@ -38,21 +53,25 @@ const TenantTopbar = ({ slug }: { slug: string }) => {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 px-4 md:px-6 **:no-underline">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 px-4 md:px-6 **:no-underline">
       <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-6">
-            <Link href={`/tenants/${data.slug}`}>
-              <span className="hidden font-bold text-xl sm:inline-block">
-                {data.name}
-              </span>
-            </Link>
+        <div className="flex items-center gap-6">
+          <Link href={`/tenants/${data.slug}`}>
+            <span className="hidden font-bold text-xl sm:inline-block">
+              {data.name}
+            </span>
+          </Link>
 
-            <NavigationMenu className="flex">
-              <NavigationMenuList className="gap-1"></NavigationMenuList>
-            </NavigationMenu>
-          </div>
+          <NavigationMenu className="w-full flex justify-end">
+            <NavigationMenuList className="gap-1">
+              {/* <NavigationMenuItem>
+                  <CheckoutButton tenantSlug={slug} />
+                </NavigationMenuItem> */}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
+
+        <CheckoutButton tenantSlug={slug} />
       </div>
     </header>
   );
