@@ -93,6 +93,7 @@ export function OptimizedImage({
         alt={image.alt}
         loading="lazy"
         quality={85}
+        draggable={false}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className={`
           object-cover w-full h-full

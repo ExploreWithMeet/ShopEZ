@@ -43,13 +43,13 @@ const ProductList = ({ category, subcategory, tenantSlug }: Props) => {
       <div className="container mx-auto px-4 sm:px-8 py-8">
         <Suspense fallback={<ProductListSkeleton count={5} />}>
           <div className="md:hidden space-y-3">
-            {data.docs.map((prod: any) => (
+            {data.docs.map((prod) => (
               <MobileProductCard product={prod} key={prod.id} />
             ))}
           </div>
 
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {data.docs.map((prod: any) => (
+            {data.docs.map((prod) => (
               <DesktopProductCard product={prod} key={prod.id} />
             ))}
           </div>

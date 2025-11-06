@@ -9,6 +9,7 @@ interface Props {
 
 const CartButton = ({ tenantSlug, productId }: Props) => {
   const cart = useCart(tenantSlug);
+  console.log(tenantSlug, productId);
   return (
     <Button
       className="w-full mt-5 text-md cursor-pointer"

@@ -59,9 +59,9 @@ export const useCartStore = create<CartState>()(
         get().tenantCarts[tenantSlug]?.productIds || [],
 
       clearAllCart: () =>
-        set({
+        set((state) => ({
           tenantCarts: {},
-        }),
+        })),
     }),
     {
       name: "shopez-cart",

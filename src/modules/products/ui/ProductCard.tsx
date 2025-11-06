@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { OptimizedImage } from "@/components/file-optimization/OptimizedImage";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -11,14 +10,30 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+import { generateTenantURL } from "@/lib/utils";
+
+const CartButton = dynamic(
+  () => import("./Product/CartButton").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => (
+      <Button
+        disabled
+        className="w-full mt-5 text-md cursor-pointer"
+        variant={"secondary"}
+      >
+        <Spinner />
+      </Button>
+    ),
+  }
+);
 
 interface ProductCardProps {
   product: any;
 }
 
 export const MobileProductCard = ({ product }: ProductCardProps) => {
-  const [liked, setLiked] = useState<boolean>(false);
-
   return (
     <Card className="relative flex-row px-3 py-3 flex gap-0 overflow-hidden border-violet-900/30 bg-card/50 hover:shadow-xl transition-all duration-300">
       <div className="max-w-48 w-40 min-w-28">
@@ -36,7 +51,7 @@ export const MobileProductCard = ({ product }: ProductCardProps) => {
           </Badge>
           <div className="flex flex-col">
             <Link
-              href={`/tenants/${product.tenant.slug}/product/${product.id}`}
+              href={`/${generateTenantURL(product.tenant.slug)}/product/${product.id}`}
               prefetch={false}
               className="text-sm w-fit font-semibold hover:underline hover:underline-offset-2 text-foreground"
             >
@@ -66,10 +81,10 @@ export const MobileProductCard = ({ product }: ProductCardProps) => {
               <Star size={14} className="stroke-muted-foreground" />
             </div>
           </div>
-          <Button size="sm" variant="default">
-            <ShoppingCart />
-            Add to Cart
-          </Button>
+          <CartButton
+            tenantSlug={product.tenant.slug}
+            productId={String(product.id)}
+          />
         </CardFooter>
       </div>
     </Card>
@@ -77,8 +92,6 @@ export const MobileProductCard = ({ product }: ProductCardProps) => {
 };
 
 export const DesktopProductCard = ({ product }: ProductCardProps) => {
-  const [liked, setLiked] = useState<boolean>(false);
-
   return (
     <Card className="p-0 relative bg-card border rounded-2xl transition-all duration-300 overflow-hidden h-auto flex flex-col">
       <CardHeader className="p-0 relative   aspect-4/3 overflow-hidden ">
@@ -110,7 +123,9 @@ export const DesktopProductCard = ({ product }: ProductCardProps) => {
           <Star size={16} className="stroke-muted-foreground" />
         </div>
 
-        <p className="text-xs text-muted-foreground">{product.description}</p>
+        <p className="text-xs text-muted-foreground min-h-16">
+          {product.description}
+        </p>
       </CardContent>
 
       <CardFooter className="px-5 pb-5 pt-0 flex-col gap-2">
@@ -125,10 +140,10 @@ export const DesktopProductCard = ({ product }: ProductCardProps) => {
           </Badge>
         </div>
         <div className="flex items-center gap-2 mt-2 justify-between w-full">
-          <Button size="default" className="flex-1 cursor-pointer">
-            <ShoppingCart />
-            Add to Cart
-          </Button>
+          <CartButton
+            tenantSlug={product.tenant.slug}
+            productId={String(product.id)}
+          />
         </div>
       </CardFooter>
     </Card>
