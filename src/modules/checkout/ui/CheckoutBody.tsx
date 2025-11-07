@@ -8,10 +8,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { generateTenantURL } from "@/lib/utils";
 import CheckoutItem from "./CheckoutItem";
-import { Button } from "@/components/ui/button";
-import { AlertCircleIcon, ListCheck, ListChecks } from "lucide-react";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Spinner } from "@/components/ui/spinner";
 import CheckoutSidebar from "./CheckoutSidebar";
 
 interface Props {
@@ -106,7 +102,7 @@ const CheckoutBody = ({ tenantSlug }: Props) => {
           data?.docs.reduce((acc, product) => {
             const price = Number(product.price);
             return acc + (isNaN(price) ? 0 : price);
-          }, 0)
+          }, 0) || 0
         )}
         isPending={false}
         isCanceled={false}
