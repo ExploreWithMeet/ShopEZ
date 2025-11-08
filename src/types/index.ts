@@ -1,3 +1,5 @@
+import type { Stripe } from "stripe";
+
 export type NavItem = {
   href: string;
   label: string;
@@ -15,4 +17,23 @@ export type TSortBy =
 export type TPriceStates = {
   min: number;
   max: number;
+};
+
+export type TProductMetaData = {
+  stripeAccountId: string;
+  id: string;
+  name: string;
+  price: number;
+};
+
+export type TCheckoutMetadata = {
+  userId: string;
+};
+
+export type TExpandedLineItem = Stripe.LineItem & {
+  price: Stripe.Price & {
+    product: Stripe.Product & {
+      metadata: TProductMetaData;
+    };
+  };
 };

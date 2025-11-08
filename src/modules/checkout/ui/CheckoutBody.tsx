@@ -1,7 +1,7 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useCart } from "../hooks/use-cart";
 import { useEffect, useState, useMemo } from "react";
 import { toast } from "sonner";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { generateTenantURL } from "@/lib/utils";
 import CheckoutItem from "./CheckoutItem";
 import CheckoutSidebar from "./CheckoutSidebar";
+import { useCheckoutStates } from "../hooks/use-checkout-states";
 
 interface Props {
   tenantSlug: string;
@@ -16,13 +17,33 @@ interface Props {
 
 const CheckoutBody = ({ tenantSlug }: Props) => {
   const [hasMounted, setHasMounted] = useState(false);
-  const { productIds, clearAllCart, removeProduct } = useCart(tenantSlug);
+  const [checkoutStates, setCheckoutStates] = useCheckoutStates();
+  const { productIds, clearCart, removeProduct } = useCart(tenantSlug);
+
   const trpc = useTRPC();
   const { data, error, isLoading } = useQuery({
     ...trpc.checkout.getProducts.queryOptions({ ids: productIds }),
     enabled: productIds.length > 0 && hasMounted,
     staleTime: Infinity,
   });
+
+  const { mutate: purchaseMutate, isPending } = useMutation(
+    trpc.checkout.purchase.mutationOptions({
+      onSuccess: (data) => {
+        // setCheckoutStates({ success: true, cancel: false });
+        window.location.href = data.url;
+      },
+      onMutate: () => {
+        setCheckoutStates({ success: false, cancel: false });
+      },
+      onError: (err) => {
+        if (err.data?.code === "UNAUTHORIZED") router.push("/login");
+        toast.error(err.message);
+        setCheckoutStates({ success: false, cancel: true });
+      },
+    })
+  );
+
   const router = useRouter();
 
   const displayedProducts = useMemo(() => {
@@ -35,6 +56,13 @@ const CheckoutBody = ({ tenantSlug }: Props) => {
   }, []);
 
   useEffect(() => {
+    if (checkoutStates.success) {
+      clearCart();
+      // router.push("/products");
+    }
+  }, [checkoutStates.success]);
+
+  useEffect(() => {
     if (hasMounted && productIds.length === 0) {
       router.push(generateTenantURL(tenantSlug));
     }
@@ -45,10 +73,10 @@ const CheckoutBody = ({ tenantSlug }: Props) => {
       toast.error("Products in Cart Doesn't Exist Anymore!", {
         position: "bottom-right",
       });
-      clearAllCart();
+      clearCart();
       router.push(generateTenantURL(tenantSlug));
     }
-  }, [error, clearAllCart, router, tenantSlug]);
+  }, [error, router, tenantSlug]);
 
   if (!hasMounted) {
     return (
@@ -104,9 +132,9 @@ const CheckoutBody = ({ tenantSlug }: Props) => {
             return acc + (isNaN(price) ? 0 : price);
           }, 0) || 0
         )}
-        isPending={false}
-        isCanceled={false}
-        onCheckout={() => {}}
+        isPending={isPending}
+        isCanceled={checkoutStates.cancel}
+        onPurchase={() => purchaseMutate({ tenantSlug, productIds })}
       />
     </div>
   );

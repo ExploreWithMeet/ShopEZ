@@ -8,7 +8,7 @@ interface Props {
   totalPrice: string;
   isPending: boolean;
   isCanceled: boolean;
-  onCheckout: () => void;
+  onPurchase: () => void;
 }
 
 const CheckoutSidebar = ({
@@ -16,7 +16,7 @@ const CheckoutSidebar = ({
   totalPrice,
   isCanceled,
   isPending,
-  onCheckout,
+  onPurchase,
 }: Props) => {
   return (
     <div className="flex flex-col gap-2.5 border h-fit mt-5 flex-1 rounded-md">
@@ -33,6 +33,7 @@ const CheckoutSidebar = ({
           variant={isPending ? "secondary" : "default"}
           className="w-full rounded-md cursor-pointer"
           disabled={isPending ? true : false}
+          onClick={onPurchase}
         >
           {isPending ? (
             <>

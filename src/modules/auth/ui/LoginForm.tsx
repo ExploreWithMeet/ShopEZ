@@ -26,6 +26,8 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
 import Link from "next/link";
+import { Tabs } from "@/components/ui/tabs";
+import { TabsList } from "@radix-ui/react-tabs";
 
 const LoginForm = () => {
   const trpc = useTRPC();
